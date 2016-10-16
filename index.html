@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>KSU | トレーナー室 勤務表</title>
+    <meta charset="utf-8">
+    <meta name="description" content="KSUトレーナー室の勤務表です。">
+    <meta name="author" content="kengo92i">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="container">
+        <div class="content-box">
+            <h1 class="text-xs-center blue">トレーナー室 勤務表</h1>
+            <div id="loading-area" class="text-xs-center"></div>
+            <p class="text-xs-right" id="roster-period"></p>
+            <div class="table-responsive">
+                <table id="roster" class="table table-bordered">
+                </table>
+            </div>
+        </div>
+        <div class="text-xs-center m-b-2">
+            <a href="https://accounts.google.com/ServiceLogin" class="btn btn-success">勤務表を更新</a>
+        </div>
+    </div>
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/tether.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+        (function () {
+            displayNowLoading();
+            $.ajax({
+                type : 'GET',
+                url : 'https://spreadsheets.google.com/feeds/cells/1N1mb2ZuiZJRFpHIOdMm_0RPhPcHHDCsl7cWdHZaxXwU/od6/public/values?alt=json',
+                dataType : 'jsonp',
+                cache : false,
+                success : function (data) {
+                    var sheetsEntry = data.feed.entry;
+                    var roster = generateRoster(sheetsEntry);
+                    renderRoster(roster);
+                },
+                error : function (error) {
+                    console.log(error);
+                },
+                complete : function (data) {
+                    removeNowLoading();
+                }
+            });
+        }());
+
+        function generateRoster(sheetsEntry) {
+            var roster = [];
+            for (var nth = 0; nth < sheetsEntry.length; ++nth) {
+                var col = sheetsEntry[nth].gs$cell.col;
+                var row = sheetsEntry[nth].gs$cell.row;
+                var cell = sheetsEntry[nth].gs$cell.$t;
+                if (roster.length <= row) {
+                    roster.push([]);
+                }
+                roster[row-1].push(cell);
+            } 
+            return roster; 
+        }
+
+        function generateTagForRoster(row) {
+            var options = ['期間', '勤務時間', '備考', '長期休暇'];
+            var tr = '';
+
+            if ($.inArray(row[0], options) >= 0) {
+                tr = '<tr>';
+                if (row[0] == '期間') {
+                    $('#roster-period').append(row[1]);
+                    return null;
+                }
+                else if (row[0] == '勤務時間') {
+                    tr = '<tr><td colspan="7" style="font-size: 1.5em;">' + row[1] + '</td></tr>'; 
+                } else {
+                    tr = '<tr><td colspan="7">' + row[1] + '</td></tr>'; 
+                }
+            } else {
+                tr = '<tr class="roster-schedule">';
+                for (var col = 0; col < row.length; ++col) {
+                    if (row[col].indexOf('#') == 0) {
+                        var res = row[col].split('#');
+                        tr += '<td>' + '<span class="other-location">' + res[1] + '</span>' + res[2] + '</td>';
+                    }
+                    else if (row[col].indexOf('#') != -1) {
+                        var res = row[col].split('#');
+                        tr += '<td>' + res[0] + '<span class="supplement-text">' + res[1] + '</span></td>';
+                    } else {
+                        tr += '<td>' + row[col] + '</td>';
+                    }
+                }
+                tr += '</tr>';
+            }
+
+            return tr;
+        }
+
+        function renderRoster(roster) {
+            var target = $('#roster');
+            for (var row = 0; row < roster.length; ++row) {
+                var tr = generateTagForRoster(roster[row]);
+                if (tr != null) {
+                    target.append(tr);
+                }
+            }
+        }
+
+        function displayNowLoading() {
+            var message = '<div class="loading-message">データを取得中...</div>';
+
+            if ($('#loading-area').val() == "") {
+                $('#loading-area').append('<div id="loading">' + message + '</div>');
+            }
+        }
+
+        function removeNowLoading() {
+            $('#loading').remove();
+        }
+
+    </script>
+</body>
+</html>
