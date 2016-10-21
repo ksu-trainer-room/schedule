@@ -1,0 +1,118 @@
+@charset "UTF-8";
+
+body {
+    margin: 0 auto;
+    padding-top: 70px;
+    background-color: #d7d5d1;/*#fefefe;*/
+}
+
+.content-box {
+    padding: 20px 30px;
+    background-color: #fff;
+    padding-top: 50px;
+    margin: 20px 0px;
+    box-shadow: 1px 1px 1px 1px rgba(33,33,33,0.3);
+}
+
+/* smart-content */
+.smart-content-wrapper {
+    position: relative;
+    width: 100%;
+    box-shadow: 1px 1px 1px 1px rgba(33,33,33,0.3);
+    margin: 10px 0px;
+    overflow: hidden;
+}
+.smart-content-wrapper:before {
+    content:"";
+    display: block;
+    padding-top: 100%;
+}
+.smart-content {
+    position: absolute;
+    padding-top: 25%;
+    color: #372c5f !important;
+    text-align: center;
+    background-color: #fff;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+.smart-content-wrapper:hover {
+    animation: ripple .6s;
+}
+@keyframes ripple {
+    0% {
+        box-shadow: 0 0 0 0 #fefefe, 0 0 20px 0 #333333;
+    }
+}
+
+/* 勤務表 */
+#roster-period {
+    font-size: 0.9em;
+    margin: 0px;
+}
+#roster td:first-child {
+    width: 200px !important;
+}
+#roster td {
+    color: #372c5f;
+    text-align: center;
+    /*white-space: nowrap;*/
+}
+.roster-schedule {
+    font-size: 3.0em;
+}
+.roster-schedule td {
+    width: 100px !important;
+    height: 100px !important;
+}
+
+
+/* 個別の勤務表 */
+#each-roster .col-xs-6 {
+    padding: 7px; 
+}
+#each-roster .card {
+    box-shadow: 1px 1px 1px 1px rgba(33,33,33,0.3);
+}
+
+/* 勤務表へのアノテーション */
+.supplement-text {
+    display: block;
+    color: red;
+    font-size: 0.5rem;
+}
+.other-location {
+    display: block;
+    font-size: 0.5rem;
+    background: #eee;
+}
+
+/* ローディング画面 */
+#loading {
+    display: inline-block;
+    padding: 50px 15px;
+    opacity: 0.85;
+    width: 250px;
+    height: 150px;
+}
+
+#loading .loading-message {
+    text-align: center;
+    padding-top: 120px;
+    background-image: url('images/gif-load.gif');
+    background-position: center top;
+    background-repeat: no-repeat;
+    font-family: "メイリオ" !important;
+}
+
+.blue {
+    color: #372c5f;
+}
+.red {
+    color: red;
+}
+.bold {
+    font-size: 2em;
+}
