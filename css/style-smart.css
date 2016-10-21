@@ -70,9 +70,6 @@ body {
 
 
 /* 個別の勤務表 */
-#each-roster .col-xs-6 {
-    padding: 7px; 
-}
 #each-roster .card {
     box-shadow: 1px 1px 1px 1px rgba(33,33,33,0.3);
 }
