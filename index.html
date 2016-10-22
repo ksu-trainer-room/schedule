@@ -8,7 +8,8 @@
     <meta name="author" content="kengo92i">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
-        if ((navigator.userAgent.indexOf('iPhone') > 0 && navigator.userAgent.indexOf('iPad') == -1) || navigator.userAgent.indexOf('iPod') > 0 || navigator.userAgent.indexOf('Android') > 0) {
+        function getParam() { var res = {}; var url = location.search.substring(1).split('&'); for(var i=0; url[i]; i++) { var k = url[i].split('='); res[k[0]] = k[1]; } return res; }
+        if ((getParam()['mode'] != undefined) && (navigator.userAgent.indexOf('iPhone') > 0 && navigator.userAgent.indexOf('iPad') == -1) || navigator.userAgent.indexOf('iPod') > 0 || navigator.userAgent.indexOf('Android') > 0) {
             location.href = '/schedule/smart/';
         } 
     </script>

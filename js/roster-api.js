@@ -56,6 +56,7 @@
 
     /**
      * お知らせを追加する
+     * 一度も実行されていない場合はお知らせが表示されない
      * @param {Object} row 勤務表の行データ
      */
     function addInformation(row) {
@@ -112,20 +113,6 @@
      * @param {Object} 勤務表データ
      */
     var render = function (roster) {
-        var target = $('#roster');
-        for (var row = 0; row < roster.length; ++row) {
-            var tr = generateRoster(roster[row]);
-            if (tr != null) {
-                target.append(tr);
-            }
-        }
-    };
-
-    /**
-     * 勤務表を表示する（スマートフォン用）
-     * @param {Object} 勤務表データ
-     */
-    var renderForSmartPhone = function (roster) {
         var target = $('#roster');
         for (var row = 0; row < roster.length; ++row) {
             var tr = generateRoster(roster[row]);

@@ -1,6 +1,6 @@
 
 /**
- * roster-api-smart.js
+ * each-roster-api-smart.js
  * Copyright (c) 2016 kengo92i
  */
 (function () {
@@ -55,15 +55,6 @@
     }
 
     /**
-     * お知らせを追加する
-     * @param {Object} row 勤務表の行データ
-     */
-    function addInformation(row) {
-        $('#information').append('<tr><td>' + row[1] + '</td><td colspan="6">' + row[2] + '</td></tr>');
-        $('#information-wrapper').show();
-    }
-
-    /**
      * 勤務表のための行データを作成する
      */
     function generateRoster(row, day) {
@@ -80,7 +71,6 @@
                 tr = '<tr><td colspan="7" style="font-size: 1.5em;">' + row[1] + '</td></tr>'; 
             }
             else if (row[0] == 'お知らせ') {
-                //addInformation(row);
                 return null;
             } else {
                 tr = '<tr><td colspan="7">' + row[1] + '</td></tr>'; 
@@ -96,14 +86,13 @@
      * 曜日ごとの勤務表のための行データを作成する
      */
     function generateEachRoster(eachRoster) {
-        console.log(eachRoster);
         for (var nth = 0; nth < eachRoster.length; ++nth) {
             var row = eachRoster[nth];
             var div = '<div class="col-xs-6"><div class="card blue"><div class="card-header text-xs-center">';
-            div += getFormatName(row[0]);
+            div += getFormatText(row[0]);
             div += '</div>';
             div += '<div class="card-block text-xs-center"><blockquote class="card-blockquote">';
-            div += '<p class="roster-schedule">' + getFormatName(row[1]) + '</p>';
+            div += '<p class="roster-schedule">' + getFormatText(row[1]) + '</p>';
             div += '</blockquote></div></div></div>';
             $('#each-roster').append(div);
         }
@@ -127,19 +116,24 @@
         return eachRoster;
     }
 
-    function getFormatName(name) {
-        var formatName = '';
-        if (name.indexOf('#') == 0) {
-            var res = name.split('#');
-            formatName += '<span class="other-location">' + res[1] + '</span>' + res[2];
+    /**
+     * 表示名をフォーマットした形式にする
+     * @param {String} フォーマットする文字列
+     * @return {String} フォーマット済みの文字列
+     */
+    function getFormatText(text) {
+        var formatText = '';
+        if (text.indexOf('#') == 0) {
+            var res = text.split('#');
+            formatText += '<span class="other-location">' + res[1] + '</span>' + res[2];
         }
-        else if (name.indexOf('#') != -1) {
-            var res = name.split('#');
-            formatName += '<span style="font-size: 1.5em;">' + res[0] + '</span><span class="supplement-text">' + res[1] + '</span>';
+        else if (text.indexOf('#') != -1) {
+            var res = text.split('#');
+            formatText += '<span style="font-size: 1.5em;">' + res[0] + '</span><span class="supplement-text">' + res[1] + '</span>';
         } else {
-            formatName += '<span style="font-size: 1.5em;">' + name + '</span>';
+            formatText += '<span style="font-size: 1.5em;">' + text + '</span>';
         }
-        return formatName;
+        return formatText;
     }
 
     /**
